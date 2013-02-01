@@ -1,0 +1,9 @@
+.DS_Store
+dev
+run/*
+logs/*
+*.log
+*.lock
+*.pyc
+*~
+screenshots

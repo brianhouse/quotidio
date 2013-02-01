@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>    
+    <title>QUOTIDIO</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">     
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=320px; initial-scale=1.0; minimum-scale=1.0, maximum-scale=1.0; user-scalable=0;" /> 
+    <link rel="apple-touch-icon" href="/static/img/iphone-icon.png" />              
+    <link rel="stylesheet" type="text/css" href="/static/css/iphone.css" />
+    <script type="text/javascript" src="/static/js/jquery-1.7.min.js"></script>   
+    <script language="javascript">
+
+        function addLabel (user_id, label) {
+            $.ajax({
+                type: 'POST',
+                url: '/',                
+                data: { partial: true,
+                        user_id: {{ user.id }},
+                        label: $("#new_label").val()                        
+                    },
+                success: function (data) {
+                    $('#content').html(data);
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
+        }
+
+        $(document).ready(function() {                    
+            $.ajax({
+                type: 'GET',
+                url: '/{{ user.id }}',                                
+                data: { partial: true },
+                success: function (data) {
+                    $('#content').html(data);
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
+        });        
+                
+    </script>          
+</head>
+
+<body>
+    
+    <div id="main">        
+        <div id="error_message"></div>    
+        <div id="content">
+
+        </div>    
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,11 @@
+log: False  
+
+mysql:
+    host: localhost
+    user: root
+    password: ''
+    database: ce
+
+tornado:
+    port: 2222
+    verbose: True
