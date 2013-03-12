@@ -11,8 +11,8 @@ CLUSTER_RADIUS = 0.5 # places are no bigger than this many miles
 CITY_RADIUS = 10.0 # cities are no bigger than this many miles
 
 # special nyc version
-RADIUS = 30.0
-CITY_RADIUS = 30.0 # cities are no bigger than this many miles
+# RADIUS = 30.0
+# CITY_RADIUS = 30.0 # cities are no bigger than this many miles
 
 
 class Almanac(dict):

@@ -8,8 +8,14 @@ from point import Point
 # although we're really probably looking at a 10" square
 # so 10" at 200dpi is 2000. going with that.
 
-SIZE = 2000, 2000
-SIZE = 10000, 10000 # nyc
+# 13-02-12 round 2
+# for the small cities:
+# 3in * 720dpi = 2160 pixels square
+# 1pt = (1/0.75)px @ 72dpi
+# 1pt = (10/0.75)px @ 720dpi = 1/0.075 ~ 13.33px, call it 15px
+
+
+SIZE = 2160, 2160
 
 def draw(city):
 
@@ -62,8 +68,10 @@ def draw(city):
 
             fill = 0.0472, 0.7792, place.color[0], 0.75
             # fill = 0., 0., 0., 0.75
-            thickness = (weight * 20.0) + 1.0   # for weighted
+            # thickness = (weight * 20.0) + 1.0   # for weighted
+            thickness = science.scale(weight, 0.0, 1.0, 15.0, 100.0)
             # thickness = 2.0   # for uniform
+            fill = 0., 0., 0.
             ctx.curve(place.centroid.x, place.centroid.y, control[0], control[1], connection.centroid.x, connection.centroid.y, thickness=thickness, stroke=fill)
 
         # # draw paths
@@ -76,12 +84,22 @@ def draw(city):
         #         ctx.line(point.x, point.y, next.x, next.y, thickness=0.25, stroke=colors[path.speed_index]) # adjust thickness as necessary
         pass
 
-    # draw places
+    # # draw places
+    # max_points = max([len(place.points) for place in places])
+    # for place in places:
+    #     weight = len(place.points) / float(max_points)        
+    #     fill = 0.0472, 0.7792, place.color[0]
+    #     ctx.arc(place.centroid.x, place.centroid.y, ((weight * 10.0) + 5.0)  / ctx.width, thickness=3.0, stroke=(0., 0., 1.0), fill=fill)
+
+    # draw places, alt
     max_points = max([len(place.points) for place in places])
     for place in places:
         weight = len(place.points) / float(max_points)        
         fill = 0.0472, 0.7792, place.color[0]
-        ctx.arc(place.centroid.x, place.centroid.y, ((weight * 10.0) + 5.0)  / ctx.width, thickness=3.0, stroke=(0., 0., 1.0), fill=fill)
+        fill = 0., 0., 0.
+        size = science.scale(weight, 0.0, 1.0, 15.0, 100.0) - 3
+        size = 14.0
+        ctx.arc(place.centroid.x, place.centroid.y, size / ctx.width, thickness=0.0, stroke=(0., 0., 1.0), fill=fill)
 
     # draw alignment guides
     # ctx.rect(upper_left.x, upper_left.y, 10. / ctx.width, 10. / ctx.width, thickness=0., fill=(0.55, 1., 1.))
