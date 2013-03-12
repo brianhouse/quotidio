@@ -22,10 +22,10 @@ data = json.loads(s)
 
 # center = -73.902615, 40.776243  # nyc
 # center = -72.723889, 43.173611  # vermont       # no points!
-# center = -71.009755, 41.569593  # new bedford
+center = -71.009755, 41.569593  # new bedford
 # center = -93.219539, 44.933524  # minneapolis
 # center = -77.059081, 38.948266  # dc
-center = -104.890219, 39.698841 # denver
+# center = -104.890219, 39.698841 # denver
 # center = -83.961412, 35.935478  # knoxville
 # center = -73.490419, 41.908486  # berkshires
 # center = -74.035318, 41.498944  # hudson valley

@@ -69,8 +69,8 @@ def draw(city):
             fill = 0.0472, 0.7792, place.color[0], 0.75
             # fill = 0., 0., 0., 0.75
             # thickness = (weight * 20.0) + 1.0   # for weighted
-            thickness = science.scale(weight, 0.0, 1.0, 15.0, 100.0)
-            # thickness = 2.0   # for uniform
+            thickness = science.scale(weight, 0.0, 1.0, 15.0, 30.0)
+            thickness = 15.0   # for uniform
             fill = 0., 0., 0.
             ctx.curve(place.centroid.x, place.centroid.y, control[0], control[1], connection.centroid.x, connection.centroid.y, thickness=thickness, stroke=fill)
 
@@ -97,8 +97,8 @@ def draw(city):
         weight = len(place.points) / float(max_points)        
         fill = 0.0472, 0.7792, place.color[0]
         fill = 0., 0., 0.
-        size = science.scale(weight, 0.0, 1.0, 15.0, 100.0) - 3
-        size = 14.0
+        # size = science.scale(weight, 0.0, 1.0, 15.0, 30.0) - 3
+        size = 8
         ctx.arc(place.centroid.x, place.centroid.y, size / ctx.width, thickness=0.0, stroke=(0., 0., 1.0), fill=fill)
 
     # draw alignment guides
