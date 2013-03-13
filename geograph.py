@@ -9,13 +9,20 @@ from point import Point
 # so 10" at 200dpi is 2000. going with that.
 
 # 13-02-12 round 2
+#
 # for the small cities:
 # 3in * 720dpi = 2160 pixels square
+# 1pt = (1/0.75)px @ 72dpi
+# 1pt = (10/0.75)px @ 720dpi = 1/0.075 ~ 13.33px, call it 15px
+#
+# for the small cities:
+# 12in * 720dpi = 8640 pixels square
 # 1pt = (1/0.75)px @ 72dpi
 # 1pt = (10/0.75)px @ 720dpi = 1/0.075 ~ 13.33px, call it 15px
 
 
 SIZE = 2160, 2160
+SIZE = 8640, 8640
 
 def draw(city):
 
@@ -69,8 +76,8 @@ def draw(city):
             fill = 0.0472, 0.7792, place.color[0], 0.75
             # fill = 0., 0., 0., 0.75
             # thickness = (weight * 20.0) + 1.0   # for weighted
-            thickness = science.scale(weight, 0.0, 1.0, 15.0, 30.0)
-            thickness = 15.0   # for uniform
+            thickness = science.scale(weight, 0.0, 1.0, 15.0, 60.0) # for nyc
+            # thickness = 15.0   # for uniform, small
             fill = 0., 0., 0.
             ctx.curve(place.centroid.x, place.centroid.y, control[0], control[1], connection.centroid.x, connection.centroid.y, thickness=thickness, stroke=fill)
 
