@@ -21,6 +21,7 @@ s = open(path).read()
 data = json.loads(s)
 
 center = -73.902615, 40.776243  # nyc
+# center = -73.959486, 40.685193  # brooklyn
 # center = -72.723889, 43.173611  # vermont       # no points!
 # center = -71.009755, 41.569593  # new bedford
 # center = -93.219539, 44.933524  # minneapolis
@@ -35,8 +36,8 @@ center = -73.902615, 40.776243  # nyc
 # center = -118.334105, 34.045948 # LA
 
 # almanac = Almanac.build(data, time.mktime(util.parse_date('2011-05-25').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
-# almanac = Almanac.build(data, time.mktime(util.parse_date('2011-12-01').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
-almanac = Almanac.build(data, time.mktime(util.parse_date('2012-01-01').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
+almanac = Almanac.build(data, time.mktime(util.parse_date('2011-08-01').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
+# almanac = Almanac.build(data, time.mktime(util.parse_date('2012-01-01').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
 
 print
 print "POINTS"

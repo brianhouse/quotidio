@@ -241,6 +241,7 @@ class Handler(tornado.web.RequestHandler):
         log.info("--> redirecting to %s" % url)
         tornado.web.RequestHandler.redirect(self, url)                   
 
+authenticated = tornado.web.authenticated
 
 def start(handlers):
     template_dir = os.path.abspath(os.path.join(os.path.dirname(__main__.__file__), "templates"))
