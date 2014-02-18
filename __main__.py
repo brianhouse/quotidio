@@ -1,80 +1,62 @@
-#!/usr/bin/env python
-
-import json, sys, os, time, datetime, math, random, pickle
+import json, sys, os, time, datetime, math, random, json, calendar
 import numpy as np
-from housepy import config, log, util, strings, science, drawing, database, net, util
-from point import Point
-from path import Path
-from place import Place
-from city import City
-from almanac import Almanac
-import geograph, tempograph, calegraph
-    
+from .housepy import config, log, util, strings, science, database
+from .point import Point
+from .path import Path
+from .place import Place
+from .city import City
 
-if len(sys.argv) < 2:
-    print("[filename]")
-    exit()
+CLUSTER_RADIUS = 0.5 # places are no bigger than this many miles
+CITY_RADIUS = 10.0 # cities are no bigger than this many miles
 
-log.info("Parsing OpenPaths file...")
-path = os.path.abspath(os.path.expanduser(sys.argv[1]))
-s = open(path).read()
-data = json.loads(s)
 
-center = -73.902615, 40.776243  # nyc
-# center = -73.959486, 40.685193  # brooklyn
-# center = -72.723889, 43.173611  # vermont       # no points!
-# center = -71.009755, 41.569593  # new bedford
-# center = -93.219539, 44.933524  # minneapolis
-# center = -77.059081, 38.948266  # dc
-# center = -104.890219, 39.698841 # denver
-# center = -83.961412, 35.935478  # knoxville
-# center = -73.490419, 41.908486  # berkshires
-# center = -74.035318, 41.498944  # hudson valley
-# center = 127.032687, 37.635063  # seoul
-# center = -71.221729, 42.306461  # boston
-# center = -68.700278, 45.658056  # millinocket
-# center = -118.334105, 34.045948 # LA
+db = database.Connection()
 
-# almanac = Almanac.build(data, time.mktime(util.parse_date('2011-05-25').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
-almanac = Almanac.build(data, time.mktime(util.parse_date('2011-08-01').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
-# almanac = Almanac.build(data, time.mktime(util.parse_date('2012-01-01').timetuple()), time.mktime(util.parse_date('2012-05-27').timetuple()), center)
+# points = Point.find_points(db, calendar.timegm(util.parse_date("2011-05-01").timetuple()), time.time())
+points = Point.find_points(db, calendar.timegm(util.parse_date("2011-05-27").timetuple()), calendar.timegm(util.parse_date("2012-05-27").timetuple()))       # 2011-05-25 is when OP began
+paths = Path.find_paths(points)
+places = Place.find_places(paths, CLUSTER_RADIUS)
+cities = City.find_cities(places, CITY_RADIUS)
 
-print
-print "POINTS"
-print np.array(almanac.points)
-print     
+print()
+print("POINTS")
+for point in points:
+    print(point)
+print()     
 
-print "PATHS"
-for path in almanac.paths:
-    print path        
-print    
+print("PATHS")
+for path in paths:
+    print(path)        
+print()    
 
-print "PLACES"        
-for place in almanac.places:
-    print place  
-print          
+print("PLACES")        
+for place in places:
+    print(place)  
+print()          
 
-print "CITIES"        
-for city in almanac.cities:
-    print city
-print          
+print("CITIES")
+for city in cities:
+    print(city)
+print()          
 
-print "CURRENT"
-if almanac.current_point.moving:
-    print "--> moving"
+
+current_point = points[-1]
+print("CURRENT")
+if current_point.moving:
+    print("--> moving")
 else:
-    print almanac.current_point.city
-    print almanac.current_point.place
-    total_weight = sum([weight for place, weight in almanac.current_point.place.connections.items()])
-    for place, weight in almanac.current_point.place.connections.items():
-        print("%s (%f)" % (place.id, (weight / total_weight)))
+    print("Point: %s" % current_point)
+    print("City: %s" % current_point.city)
+    print("Place: %s" % current_point.place)
+    print()
+    print("NEXT PLACE")
+    total_weight = sum([weight for place, weight in list(current_point.place.connections.items())])
+    for place, weight in list(current_point.place.connections.items()):
+        print(("%s (%d%%)" % (place.id, int((weight / total_weight) * 100.0))))
 
-# calegraph.draw(almanac[2012][1], brightness=0.33)
-# calegraph.draw(almanac[2012][2])
-# tempograph.draw(almanac.days)    
-
-for city in almanac.cities:
-    geograph.draw(city)    
-    
-
+for point in points:
+    place = point.place.id if point.place is not None else -1    
+    city = point.city.id if point.city is not None else -1   
+    derived = {'place': place, 'city': city}
+    db.execute("UPDATE data SET derived=%s WHERE id=%s", json.dumps(derived), point.id)
 
