@@ -1,0 +1,3 @@
+cluster_radius: 0.5
+city_radius: 50
+verbose: True

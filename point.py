@@ -30,6 +30,7 @@ class Point(TimedDatum):
         self.place = None
         self.city = None
         self.moving = False
+        self.date = None
         TimedDatum.__init__(self, t)        
         
     @property

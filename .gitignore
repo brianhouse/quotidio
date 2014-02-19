@@ -1,9 +1,6 @@
+housepy
 .DS_Store
-dev
-run/*
-logs/*
-*.log
-*.lock
 *.pyc
-*~
-screenshots
+__pycache__
+data.db
+config.yaml

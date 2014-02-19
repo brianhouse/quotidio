@@ -5,7 +5,7 @@ from cluster_tree import ClusterTree
 
 class Place(object):
         
-    def __init__(self, id, centroid, color=(0.0, 1.0, 1.0)):
+    def __init__(self, id, centroid, color=(0.0, 0.0, 0.0, 1.0)):
         self.id = id
         self.label = None
         self.centroid = centroid
@@ -47,9 +47,11 @@ class Place(object):
         clusters = ct.get_pruned(cluster_radius)
 
         # initialize place
-        def make_color():            
-            return random.random(), 1.0, 1.0
-        places = [Place(c, Point(None, cluster.vector[0], cluster.vector[1]), make_color()) for (c, cluster) in enumerate(clusters)]    # point is just convenience for centroid
+        def make_color(c):            
+            return c, 1., 1.
+        places = [Place(c, Point(None, cluster.vector[0], cluster.vector[1]), make_color(c / len(clusters))) for (c, cluster) in enumerate(clusters)]    # point is just convenience for centroid
+        for place in places:
+            place.centroid.normalize_position()
         
         # re-associate path terminals with clusters
         def get_closest(point):

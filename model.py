@@ -33,7 +33,7 @@ def update(point_id, derived):
         log.error(log.exc(e))
         return
     connection.commit()
-    log.info("Processed point (%s)" % point_id)
+    # log.info("Processed point (%s)" % point_id)
 
 def fetch(start, end):
     db.execute("SELECT rowid as id, t, raw FROM data WHERE t>=? AND t<=? ORDER BY t", (start, end))

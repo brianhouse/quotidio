@@ -3,14 +3,16 @@ quotidio
 
 Process OpenPaths json data to create a data structure of place nodes, behavior networks, and common trips.
 
+Requires: housepy
 Usage:
 
     python3 quotidio openpaths_brianhouse.json      # load data
-    python3 quotidio 2011-05-27 2012-05-27          # run for given time range
+    python3 quotidio 2011-05-27 2012-05-27          # performing clustering for given time range
+    python3 quotidio 2011-05-27 2012-05-27 1        # cluster, and then show spatial network diagram for the city number
 
-Requires: housepy
 
-"... i have resorted to the category of "trajectory". it was
+
+> "... i have resorted to the category of "trajectory". it was
 intended to suggest a temporal movement through space,
 that is, the unity of diachronic *succession* of points through
 which it passes, and not the *figure* that these points form
