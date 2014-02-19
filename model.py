@@ -1,5 +1,8 @@
 import sqlite3, json, os
-from housepy import log
+try:
+    from housepy import log
+except ImportError:
+    from .housepy import log
 
 connection = sqlite3.connect(os.path.abspath(os.path.join(os.path.dirname(__file__), "data.db")))
 connection.row_factory = sqlite3.Row
@@ -35,6 +38,6 @@ def update(point_id, derived):
     connection.commit()
     # log.info("Processed point (%s)" % point_id)
 
-def fetch(start, end):
-    db.execute("SELECT rowid as id, t, raw FROM data WHERE t>=? AND t<=? ORDER BY t", (start, end))
+def fetch(start=0, end=9999999999):
+    db.execute("SELECT rowid as id, t, raw, derived FROM data WHERE t>=? AND t<=? ORDER BY t", (start, end))
     return [dict(row) for row in db.fetchall()]
