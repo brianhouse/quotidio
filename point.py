@@ -1,6 +1,6 @@
-import json, sys, os, time, datetime, math, random, calendar
+import json, sys, os, time, datetime, math, random, model
 import numpy as np
-from housepy import config, log, util, strings, science
+from housepy import config, log, geo, util
 
 
 class TimedDatum(object):
@@ -25,7 +25,7 @@ class Point(TimedDatum):
         self.id = id
         self.lon = lon
         self.lat = lat
-        self.x, self.y = science.geo_project((self.lon, self.lat))
+        self.x, self.y = geo.project((self.lon, self.lat))
         self.paths = []    
         self.place = None
         self.city = None
@@ -35,9 +35,48 @@ class Point(TimedDatum):
     @property
     def location(self):
         return self.lon, self.lat
-                
+        
+    def normalize_position(self):
+        self.x = util.scale(self.x, Point.min_x, Point.max_x)
+        self.y = util.scale(self.y, Point.min_y, Point.max_y)                            
+        
     def __str__(self):
         return "[%s] %s (%f,%f) %s %s%s" % (str(self.id).zfill(2), self.date, self.lat, self.lon, ("moving" if self.moving else ""), ("%s:" % self.city.id if self.city is not None else ""), (self.place.id if self.place is not None else "")) 
 
     def __repr__(self):
         return "(%f, %f, %s)" % (self.lat, self.lon, self.date)
+
+    @classmethod
+    def find_points(cls, start, end):
+
+        results = model.fetch(start, end)
+        if not len(results):
+            return []
+
+        points = []
+        for i, row in enumerate(results):
+            data = json.loads(row['raw'])
+            points.append(Point(row['id'], float(data['lon']), float(data['lat']), float(row['t'])))
+
+        lons = np.array([point.lon for point in points])
+        lats = np.array([point.lat for point in points])
+        xs = np.array([point.x for point in points])
+        ys = np.array([point.y for point in points])
+        cls.max_lon = np.max(lons)
+        cls.min_lon = np.min(lons)
+        cls.max_lat = np.max(lats)
+        cls.min_lat = np.min(lats)
+        cls.max_x = np.max(xs)
+        cls.min_x = np.min(xs)
+        cls.max_y = np.max(ys)
+        cls.min_y = np.min(ys)
+        points = list(points)
+        for point in points:
+            point.normalize_position()
+            
+        points.sort(key=lambda p: p.t)                
+
+        log.info("%d points" % len(points))    
+
+        return points
+

@@ -3,7 +3,12 @@ quotidio
 
 Process OpenPaths json data to create a data structure of place nodes, behavior networks, and common trips.
 
-In progress. Includes multiple visualization types.
+Usage:
+
+    python3 quotidio openpaths_brianhouse.json      # load data
+    python3 quotidio 2011-05-27 2012-05-27          # run for given time range
+
+Requires: housepy
 
 "... i have resorted to the category of "trajectory". it was
 intended to suggest a temporal movement through space,

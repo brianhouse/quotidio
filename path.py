@@ -1,6 +1,6 @@
 import json, sys, os, time, datetime, math, random
 import numpy as np
-from housepy import config, log, util, strings, science
+from housepy import config, log, util, strings, geo
 from point import Point
 
 MOVING_THRESHOLD = 60 * 10    # if points are within 10 minutes, we are in transit
@@ -17,7 +17,7 @@ class Path(list):
     def bake(self):    
         self.start_point = self[0]
         self.end_point = self[-1]  
-        self.distance = science.geo_distance(self.start_point.location, self.end_point.location)      
+        self.distance = geo.distance(self.start_point.location, self.end_point.location)      
         self.start_time = self[1].date if len(self) > 1 and not Path.linked(self[0], self[1]) else self[0].date    # dont use the start_point date as the path start_time if we've been at the start_point for awhile
         self.end_time = self[-1].date
         self.calc_speed()
@@ -36,7 +36,7 @@ class Path(list):
         # calc segment speeds    
         for i, point in enumerate(points[:-1]):
             next = points[i+1]
-            d = science.geo_distance(point.location, next.location, True)
+            d = geo.distance(point.location, next.location, True)
             t = abs(point.t - next.t)
             if t > 0.0:
                 segment_speeds.append(d / t)

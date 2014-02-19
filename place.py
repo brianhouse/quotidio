@@ -1,7 +1,7 @@
 import json, sys, os, time, datetime, math, random
-import numpy as np
-from housepy import config, log, util, strings, science
+from housepy import config, log, geo
 from point import Point
+from cluster_tree import ClusterTree
 
 class Place(object):
         
@@ -41,7 +41,7 @@ class Place(object):
             vectors.append((terminal.lon, terminal.lat))
             # print "%f, %f" % (terminal.lon, terminal.lat)
 
-        ct = science.ClusterTree.build(vectors, science.geo_distance)
+        ct = ClusterTree.build(vectors, geo.distance)
         # print("place clustertree:")
         # print(ct.draw())
         clusters = ct.get_pruned(cluster_radius)
@@ -56,7 +56,7 @@ class Place(object):
             # in theory, a point in a cluster could be closer to the centroid of a different cluster (maybe?). however, I dont think doing things this way will be detrimental
             min_d = float('inf')
             for cluster in clusters:
-                d = science.geo_distance((point.lon, point.lat), cluster.vector)
+                d = geo.distance((point.lon, point.lat), cluster.vector)
                 if d < min_d:
                     closest_cluster = cluster
                     min_d = d

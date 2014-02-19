@@ -23,5 +23,18 @@ def insert(t, data):
         log.error(log.exc(e))
         return
     connection.commit()
-    log.info("Inserted feature (%s) %s" % (entry_id, t))    
+    log.info("Inserted point (%s) %s" % (entry_id, t))    
     return entry_id
+
+def update(point_id, derived):
+    try:
+        db.execute("UPDATE data SET derived=? WHERE rowid=?", (json.dumps(derived), point_id))
+    except Exception as e:
+        log.error(log.exc(e))
+        return
+    connection.commit()
+    log.info("Processed point (%s)" % point_id)
+
+def fetch(start, end):
+    db.execute("SELECT rowid as id, t, raw FROM data WHERE t>=? AND t<=? ORDER BY t", (start, end))
+    return [dict(row) for row in db.fetchall()]
