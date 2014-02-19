@@ -1,15 +1,16 @@
-quotidio
+Quotidio
 ========
 
-Process OpenPaths json data to create a data structure of place nodes, behavior networks, and common trips.
+Process OpenPaths json data to create a data structure of place nodes, behavior networks, and common trips using naive agglomerative clustering.
 
-Requires: housepy
+Requires: housepy  
 Usage:
 
     python3 quotidio openpaths_brianhouse.json      # load data
-    python3 quotidio 2011-05-27 2012-05-27          # performing clustering for given time range
-    python3 quotidio 2011-05-27 2012-05-27 1        # cluster, and then show spatial network diagram for the city number
+    python3 quotidio 2011-05-27 2012-05-27          # perform clustering for given time range
+    python3 quotidio 2011-05-27 2012-05-27 1        # cluster + show spatial network diagram for the city number
 
+See config.yaml for parameter adjustment.
 
 
 > "... i have resorted to the category of "trajectory". it was
