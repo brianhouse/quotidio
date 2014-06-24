@@ -1,4 +1,4 @@
-import json, sys, os, time, datetime, math, random, model
+import json, sys, os, time, datetime, math, random
 import numpy as np
 from housepy import config, log, geo, util
 
@@ -48,16 +48,11 @@ class Point(TimedDatum):
         return "(%f, %f, %s)" % (self.lat, self.lon, self.date)
 
     @classmethod
-    def find_points(cls, start, end):
-
-        results = model.fetch(start, end)
-        if not len(results):
-            return []
+    def find_points(cls, results, start, end):
 
         points = []
-        for i, row in enumerate(results):
-            data = json.loads(row['raw'])
-            points.append(Point(row['id'], float(data['lon']), float(data['lat']), float(row['t'])))
+        for i, data in enumerate(results):
+            points.append(Point(i, float(data['lon']), float(data['lat']), float(data['t'])))
 
         lons = np.array([point.lon for point in points])
         lats = np.array([point.lat for point in points])

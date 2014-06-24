@@ -6,9 +6,7 @@ Process OpenPaths json data to create a data structure of place nodes, behavior 
 Requires: housepy  
 Usage:
 
-    python3 quotidio openpaths_brianhouse.json      # load data
-    python3 quotidio 2011-05-27 2012-05-27          # perform clustering for given time range
-    python3 quotidio 2011-05-27 2012-05-27 1        # cluster + show spatial network diagram for the city number
+    python3 quotidio openpaths_brianhouse.json
 
 See config.yaml for parameter adjustment.
 
